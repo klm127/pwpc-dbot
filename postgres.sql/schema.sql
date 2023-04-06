@@ -37,7 +37,7 @@ COMMENT ON COLUMN "Members"."info" IS 'Can be whatever member wants.';
 
 COMMENT ON COLUMN "Members"."discord_id" IS 'Determined by bot and queries.';
 
-COMMENT ON COLUMN "Members"."last_discord_name" IS 'Can change; bot should update if so.';
+COMMENT ON COLUMN "Members"."last_discord_name" IS 'Can change bot should update if so.';
 
 COMMENT ON TABLE "RoleAssignments" IS 'Members may, and officers definitely will, have more than one role assignment.';
 
