@@ -33,11 +33,13 @@ rmc:
 	docker rm ${DB_CONTAINER_NAME} --force
 
 # build all
-ba_docker:
+ba:
 	$(MAKE) bi
 	$(MAKE) sc
+	timeout /T 2
+	$(MAKE) psql
 
-clean_docker:
+clean:
 	$(MAKE) rmc
 	$(MAKE) rmi
 
