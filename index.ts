@@ -1,7 +1,7 @@
 import DiscordJS, {GatewayIntentBits as Intents, Events as DiscordEvents} from 'discord.js'
 import dotenv from 'dotenv'
 
-import commands from "./commands/commands"
+import Commands from "./commands/Commands"
 
 dotenv.config()
 
@@ -32,7 +32,7 @@ client.on(DiscordEvents.MessageCreate, m => {
 
 client.on(DiscordEvents.InteractionCreate, async i=>{
     if(!i.isChatInputCommand()) return
-    const command = commands.get(i.commandName)
+    const command = Commands.get(i.commandName)
     if(command) {
         await command.execute(i);
     } else {

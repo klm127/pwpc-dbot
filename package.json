@@ -19,6 +19,7 @@
     "nodemon": "^2.0.22",
     "pg": "^8.10.0",
     "ts-node": "^10.9.1",
+    "typeorm": "^0.3.13",
     "typescript": "^5.0.3"
   },
   "devDependencies": {
