@@ -3,7 +3,7 @@ CREATE TABLE "Members" (
   "email" varchar UNIQUE,
   "first_name" varchar NOT NULL,
   "last_name" varchar,
-  "birthday" timepstamptz,
+  "birthday" timestamptz,
   "info" varchar,
   "discord_id" bigint,
   "last_discord_name" varchar,
@@ -14,7 +14,7 @@ CREATE TABLE "Members" (
 CREATE TABLE "RoleAssignments" (
   "member" int NOT NULL,
   "member_role" varchar NOT NULL,
-  "assigned_at" timepstamptz DEFAULT (now()),
+  "assigned_at" timestamptz DEFAULT (now()),
   PRIMARY KEY ("member", "member_role")
 );
 
@@ -25,8 +25,8 @@ CREATE TABLE "MemberRoles" (
 
 CREATE TABLE "VoteRecords" (
   "id" int PRIMARY KEY,
-  "vote_start" timepstamptz DEFAULT (now()),
-  "vote_end" timepstamptz NOT NULL,
+  "vote_start" timestamptz DEFAULT (now()),
+  "vote_end" timestamptz NOT NULL,
   "vote_prompt" varchar,
   "aye" int DEFAULT 0,
   "nay" int DEFAULT 0,

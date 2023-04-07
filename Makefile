@@ -1,56 +1,53 @@
-
 # (private) .env definitions include DB_USER, DB_PASSWORD
 include .env
 
-# public .env definitions such as port, DB image
-include public.env
-
-TMP_FOLDER=.make
-
-#setup make environment
-$(TMP_FOLDER):
-	mkdir $(TMP_FOLDER)
-
 # --- Docker creation and starting.
 
-${TMP_FOLDER}/docker.dependencies: $(TMP_FOLDER)
-	docker pull ${DB_IMAGE}
-	echo "got dependencies" > ${TMP_FOLDER}/docker.dependencies
+# build image
+bi:
+	docker build -t ${DOCKER_CUSTOM_IMAGE} --rm \
+	--build-arg image=${DB_IMAGE} \
+	--build-arg port=${DB_PORT} \
+	--build-arg user=${DB_USER} \
+	--build-arg password=${DB_PASSWORD} \
+	--build-arg dbname=${DB_DATABASE_NAME} .
 
-${TMP_FOLDER}/build.postgres: ${TMP_FOLDER}/docker.dependencies
-	docker run --name ${DB_CONTAINER_NAME} -p ${DOCKER_PORT_MAPPING} -e POSTGRES_USER=${DB_USER} -e POSTGRES_PASSWORD=${DB_PASSWORD} -d ${DB_IMAGE}
-	echo "build postgres" > ${TMP_FOLDER}/build.postgres 
+# remove image
+rmi:
+	docker image rm ${DOCKER_CUSTOM_IMAGE}
 
-${TMP_FOLDER}/start.postgres: ${TMP_FOLDER}/build.postgres
-	echo "started postgres" > ${TMP_FOLDER}/start.postgres
-	docker start ${DB_CONTAINER_NAME}
+# start container
+sc:
+	docker run --name ${DB_CONTAINER_NAME} \
+	-p ${DOCKER_PORT_MAPPING} \
+	-e POSTGRES_USER=${DB_USER} \
+	-e POSTGRES_PASSWORD=${DB_PASSWORD} \
+	-d ${DOCKER_CUSTOM_IMAGE}
 
-docker_start: ${TMP_FOLDER}/start.postgres
-	echo "started"
-
-
-# --- Docker removal and cleanup.
-
-docker_stop:
-	del ${TMP_FOLDER}/start.postgres
+# stop container
+stc:
 	docker stop ${DB_CONTAINER_NAME}
 
-docker_remove_container:
-	del ${TMP_FOLDER}/build.postgres
-	docker rm ${DB_CONTAINER_NAME}
+# remove container
+rmc:
+	docker rm ${DB_CONTAINER_NAME} --force
 
-docker_clean:
-	del ${TMP_FOLDER}\\start.postgres
-	del ${TMP_FOLDER}\\build.postgres
-	docker stop ${DB_CONTAINER_NAME}
-	docker rm ${DB_CONTAINER_NAME}
+# build all
+ba_docker:
+	$(MAKE) bi
+	$(MAKE) sc
+
+clean_docker:
+	$(MAKE) rmc
+	$(MAKE) rmi
 
 
-# --- DB creation
+# --- Utility makes
 
-${TMP_FOLDER}/db.build: ${TMP_FOLDER}/start.postgres
-	docker exec -it ${DB_CONTAINER_NAME} createdb --username=${DB_USER} --owner=${DB_USER} ${DB_DATABASE_NAME}
-	echo "db created" >> ${TMP_FOLDER}/db.build
+# psql shell \l : list databses
+psql:
+	docker exec -it ${DB_CONTAINER_NAME} psql
 
-db_schema: ${TMP_FOLDER}/db.build
-	ts-node postgres.sql/build_db_script.ts ${DB_HOST} ${DB_PORT} ${DB_DATABASE_NAME} ${DB_USER} ${DB_PASSWORD}
+# linux shell
+bash:
+	docker exec -it ${DB_CONTAINER_NAME} /bin/bash
