@@ -4,52 +4,24 @@ include .env
 # --- Docker creation and starting.
 
 # build image
-bi:
-	docker build -t ${DOCKER_CUSTOM_IMAGE} --rm \
-	--build-arg image=${DB_IMAGE} \
-	--build-arg port=${DB_PORT} \
-	--build-arg user=${DB_USER} \
-	--build-arg password=${DB_PASSWORD} \
-	--build-arg dbname=${DB_DATABASE_NAME} .
 
-# remove image
-rmi:
-	docker image rm ${DOCKER_CUSTOM_IMAGE}
+pg.container:
+	docker run --name ${PG_CONTAINER} \
+	-p ${PG_PORT_EXPOSE}:${PG_PORT_INTERNAL} \
+	-e POSTGRES_USER=${PG_USER} \
+	-e POSTGRES_PASSWORD=${PG_PASS} \
+	-d ${PG_IMAGE}
 
-# start container
-sc:
-	docker run --name ${DB_CONTAINER_NAME} \
-	-p ${DOCKER_PORT_MAPPING} \
-	-e POSTGRES_USER=${DB_USER} \
-	-e POSTGRES_PASSWORD=${DB_PASSWORD} \
-	-d ${DOCKER_CUSTOM_IMAGE}
+pg.stop:
+	docker stop ${PG_CONTAINER}
 
-# stop container
-stc:
-	docker stop ${DB_CONTAINER_NAME}
+pg.rm:
+	docker rm ${PG_CONTAINER} --force
 
-# remove container
-rmc:
-	docker rm ${DB_CONTAINER_NAME} --force
+pg.db:
+	docker exec -it ${PG_CONTAINER} createdb --username=${PG_USER} --owner=${PG_USER} ${PG_DB}
 
-# build all
-ba:
-	$(MAKE) bi
-	$(MAKE) sc
-	timeout /T 2
-	$(MAKE) psql
-
-clean:
-	$(MAKE) rmc
-	$(MAKE) rmi
-
-
-# --- Utility makes
-
-# psql shell \l : list databses
-psql:
-	docker exec -it ${DB_CONTAINER_NAME} psql
-
-# linux shell
-bash:
-	docker exec -it ${DB_CONTAINER_NAME} /bin/bash
+pg:
+	$(MAKE) pg.container
+	timeout /T 3
+	$(MAKE) pg.db
