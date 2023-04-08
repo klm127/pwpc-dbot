@@ -1,5 +1,6 @@
 .env
 node_modules
 myproj
+egtorm
 package-lock.json
 .make
