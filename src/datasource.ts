@@ -1,6 +1,8 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
 import { Member } from "./entity/Member"
+import { MemberRole } from "./entity/MemberRoles"
+import { RoleAssignment } from "./entity/RoleAssignments"
 
 export default function GetAppDataSource(inDocker=false) : DataSource {
     return new DataSource({
@@ -13,7 +15,7 @@ export default function GetAppDataSource(inDocker=false) : DataSource {
         /*! Remove this! */
         synchronize: process.env.TORM_SYNC == "true" ? true : false,
         logging: false,
-        entities: [Member],
+        entities: [Member, MemberRole, RoleAssignment],
         migrations: [],
         subscribers: []
     })

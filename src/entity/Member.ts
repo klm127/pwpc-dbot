@@ -6,10 +6,12 @@ export class Member {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column({
+        unique: true
+    })
     email: string
 
-    @Column({nullable: true})
+    @Column()
     first_name: string
 
     @Column({nullable: true})
@@ -36,6 +38,11 @@ export class Member {
     @CreateDateColumn({type:"timestamptz"})
     created_at: Date
 
-
+    static Sample() {
+        let mem = new Member()
+        mem.email = "em@em.com"
+        mem.first_name = "sample"
+        return mem
+    }
 
 }
