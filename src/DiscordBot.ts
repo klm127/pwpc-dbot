@@ -2,8 +2,8 @@
 import {DataSource, DataSourceOptions} from "typeorm"
 import DiscordJS, {Events as DiscordEvents} from "discord.js"
 import GetAppDataSource from "./datasource"
-import { Command } from "./commands/Command"
-import GetCommandsMap from "./commands/Commands"
+import { SlashCommand } from "./slashCommands/SlashCommand"
+import GetSlashCommandsMap from "./slashCommands/SlashCommands"
 import GetDiscordClient from "./DiscordClient"
 
 
@@ -23,7 +23,7 @@ export default class DiscordBot {
     /** Provides access to Discord. */
     client: DiscordJS.Client
     /** Commands */
-    commands: Map<string, Command>
+    commands: Map<string, SlashCommand>
 
     /** Discord connection settings */
     discord_connect: BotParams["discord"]
@@ -31,9 +31,10 @@ export default class DiscordBot {
     constructor(params: BotParams) {
         this.database = GetAppDataSource(params.database)
         this.client = GetDiscordClient()
-        this.commands = GetCommandsMap(this.database, this.client)
+        this.commands = GetSlashCommandsMap(this.database, this.client)
         this.discord_connect = params.discord
         this.SetDiscordListeners()
+        //console.log("commands loaded:", Array.from(this.commands.keys()).join(","))
     }
 
     SetDiscordListeners() {
@@ -56,6 +57,7 @@ export default class DiscordBot {
     start() {
         let my = this;
         this.database.initialize().then(async()=> {
+            console.log(" >> Database initialized. Starting bot.")
             my.client.login(my.discord_connect.token)
         })
     }

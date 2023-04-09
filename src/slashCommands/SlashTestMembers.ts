@@ -1,24 +1,29 @@
 import { SlashCommandBuilder, Interaction, CacheType, Client } from "discord.js";
 
-import { Command } from "./Command";
+import { SlashCommand } from "./SlashCommand";
 import { DataSource } from "typeorm";
 
-export default class PingCommand extends Command{
+import { Member } from "../entity/Member";
 
-    static commandName = "ping"
+export default class TestMembersCommand extends SlashCommand {
+
+    static commandName = "members"
 
     constructor(datasource: DataSource, client: Client) {
         super(datasource, client)
 
         this.data = new SlashCommandBuilder()
-            .setName(PingCommand.commandName)
-            .setDescription("Replies with pong.")
+            .setName(TestMembersCommand.commandName)
+            .setDescription("Lists the officers.")
     }
     async execute(interaction: Interaction<CacheType>) {
         if(interaction.isChatInputCommand()) {
+
+
+            const users = await this.datasource.getRepository(Member).find()
             await interaction.reply({
                 fetchReply: true,
-                content: "Pong to you " + interaction.user.username
+                content: JSON.stringify(users)
             })
         }
     }

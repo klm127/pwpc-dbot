@@ -5,7 +5,7 @@ import { CacheType, Client, Interaction, SlashCommandBuilder } from "discord.js"
 /**
  * "Abstract" class for commands that provides access to datasource and client.
  */
-export class Command {
+export class SlashCommand {
     datasource: DataSource
     client: Client
     data: SlashCommandBuilder
