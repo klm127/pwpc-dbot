@@ -1,11 +1,11 @@
-import { SlashCommandBuilder, Interaction, CacheType, Client } from "discord.js";
+import { SlashCommandBuilder, CacheType, Client, ChatInputCommandInteraction } from "discord.js";
 
 import { SlashCommand } from "./SlashCommand";
 import { DataSource } from "typeorm";
 
 export default class PingCommand extends SlashCommand {
 
-    static commandName = "pingx"
+    static commandName = "ping"
 
     constructor(datasource: DataSource, client: Client) {
         super(datasource, client)
@@ -14,13 +14,11 @@ export default class PingCommand extends SlashCommand {
             .setName(PingCommand.commandName)
             .setDescription("Replies with pong.")
     }
-    async execute(interaction: Interaction<CacheType>) {
-        if(interaction.isChatInputCommand()) {
-            await interaction.reply({
-                fetchReply: true,
-                content: "Pong to you " + interaction.user.username
-            })
-        }
+    async execute(interaction: ChatInputCommandInteraction<CacheType>) {
+        await interaction.reply({
+            fetchReply: true,
+            content: "Pong to you " + interaction.user.username
+        })
     }
 
 }

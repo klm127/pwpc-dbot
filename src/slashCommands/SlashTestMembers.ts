@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, Interaction, CacheType, Client } from "discord.js";
+import { SlashCommandBuilder, Interaction, CacheType, Client, ChatInputCommandInteraction } from "discord.js";
 
 import { SlashCommand } from "./SlashCommand";
 import { DataSource } from "typeorm";
@@ -16,16 +16,12 @@ export default class TestMembersCommand extends SlashCommand {
             .setName(TestMembersCommand.commandName)
             .setDescription("Lists the officers.")
     }
-    async execute(interaction: Interaction<CacheType>) {
-        if(interaction.isChatInputCommand()) {
-
-
-            const users = await this.datasource.getRepository(Member).find()
-            await interaction.reply({
-                fetchReply: true,
-                content: JSON.stringify(users)
-            })
-        }
+    async execute(interaction: ChatInputCommandInteraction<CacheType>) {
+        const users = await this.datasource.getRepository(Member).find()
+        await interaction.reply({
+            fetchReply: true,
+            content: JSON.stringify(users)
+        })
     }
 
 }

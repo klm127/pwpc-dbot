@@ -3,8 +3,10 @@ import {DataSource, DataSourceOptions} from "typeorm"
 import DiscordJS, {Events as DiscordEvents} from "discord.js"
 import GetAppDataSource from "./datasource"
 import { SlashCommand } from "./slashCommands/SlashCommand"
-import GetSlashCommandsMap from "./slashCommands/SlashCommands"
+import GetSlashCommandsMap from "./slashCommands/GetSlashCommandsMap"
 import GetDiscordClient from "./DiscordClient"
+import { ModalSubmit } from "./modal/Modal"
+import GetModalMap from "./modal/GetModalMap"
 
 
 export type BotParams = {
@@ -24,6 +26,7 @@ export default class DiscordBot {
     client: DiscordJS.Client
     /** Commands */
     commands: Map<string, SlashCommand>
+    modals: Map<string, ModalSubmit>
 
     /** Discord connection settings */
     discord_connect: BotParams["discord"]
@@ -32,24 +35,37 @@ export default class DiscordBot {
         this.database = GetAppDataSource(params.database)
         this.client = GetDiscordClient()
         this.commands = GetSlashCommandsMap(this.database, this.client)
+        this.modals = GetModalMap(this.database, this.client)
         this.discord_connect = params.discord
-        this.SetDiscordListeners()
+        this.setDiscordListeners()
         //console.log("commands loaded:", Array.from(this.commands.keys()).join(","))
     }
 
-    SetDiscordListeners() {
+    setDiscordListeners() {
         let my = this
 
         this.client.on(DiscordEvents.InteractionCreate, async i => {
-            if(!i.isChatInputCommand()) return
-            const command = my.commands.get(i.commandName)
-            if(command) {
-                await command.execute(i)
-            } else {
-                await i.reply({
-                    content: "I don't know that command."
-                })
+            if(i.isChatInputCommand()) {
+                const command = my.commands.get(i.commandName)
+                if(command) {
+                    await command.execute(i)
+                } else {
+                    await i.reply({
+                        content: "I don't know that command."
+                    })
+                }
+            } else if(i.isModalSubmit()) {
+                const command = my.modals.get(i.customId)
+                if(command) {
+                    await command.execute(i)
+                } else {
+                    await i.reply({
+                        ephemeral: true,
+                        content: "Your modal submission wasn't understood... how did you do that?!"
+                    })
+                }
             }
+            
         })
 
     }

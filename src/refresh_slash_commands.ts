@@ -1,6 +1,6 @@
 import {REST, Routes} from "discord.js"
 import dotenv from "dotenv"
-import GetSlashCommandsMap from "./slashCommands/SlashCommands"
+import GetSlashCommandsMap from "./slashCommands/GetSlashCommandsMap"
 dotenv.config()
 
 

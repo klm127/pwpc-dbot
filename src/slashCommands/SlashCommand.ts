@@ -1,9 +1,9 @@
 import { DataSource } from "typeorm"
-import { CacheType, Client, Interaction, SlashCommandBuilder } from "discord.js"
+import { CacheType, ChatInputCommandInteraction, Client, Interaction, SlashCommandBuilder } from "discord.js"
 
 
 /**
- * "Abstract" class for commands that provides access to datasource and client.
+ * "Abstract" class for commands that provides access to datasource and client to slash commands.
  */
 export class SlashCommand {
     datasource: DataSource
@@ -15,6 +15,6 @@ export class SlashCommand {
         this.client = client
     }
 
-    async execute(interaction: Interaction<CacheType>) {}
+    async execute(interaction: ChatInputCommandInteraction<CacheType>) {}
     
 }
