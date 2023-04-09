@@ -2,6 +2,7 @@ import { SlashCommandBuilder, Interaction, CacheType, PermissionFlagsBits, ChatI
 import { Client } from "discord.js";
 import { DataSource } from "typeorm";
 import { SlashCommand } from "./SlashCommand";
+import { delayDelete } from "../utility/InteractionHelpers";
 
 
 export default class SlashMessageAll extends SlashCommand {
@@ -62,11 +63,7 @@ export default class SlashMessageAll extends SlashCommand {
 
             content: "Sent!"
         })
-        setTimeout( ()=> {
-            reply.delete().then( ()=> {
-            }).catch( e=> {
-                console.error(e)
-            })
-        }, 4000)
+        
+        delayDelete(interaction, 60000)
     }
 }

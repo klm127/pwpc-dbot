@@ -2,50 +2,68 @@ import { SlashCommandBuilder, Interaction, CacheType, PermissionFlagsBits, TextI
 import { Client } from "discord.js";
 import { DataSource } from "typeorm";
 import { SlashCommand } from "./SlashCommand";
+import { Member } from "../entity/Member";
 
 
-export default class SlashRegister extends SlashCommand {
-    static commandName = "register"
+export default class SlashUpdate extends SlashCommand {
+    static commandName = "update"
 
     constructor(datasource: DataSource, client: Client) {
         super(datasource, client)
 
         this.data = new SlashCommandBuilder()
-            .setName(SlashRegister.commandName)
-            .setDescription("Register as a prospective member of the programming club.")
+            .setName(SlashUpdate.commandName)
+            .setDescription("Update your user information.")
     }
     async execute(interaction: ChatInputCommandInteraction<CacheType>) {
 
-        const modal = new ModalBuilder()
-            .setCustomId("register")
-            .setTitle("Register with the Programming Club")
+        const userid = interaction.user.id
+        const matching = await this.datasource.manager.find(Member, {
+            where: {
+                discord_id: userid
+            }
+        })
+        if(matching.length < 1) {
+            interaction.reply({
+                fetchReply: true,
+                ephemeral: true,
+                content: "Sorry, I don't have a record of you."
+            })
+            return
+        }
 
+        const user = matching[0]
+
+        const modal = new ModalBuilder()
+            .setCustomId("update")
+            .setTitle("Update your info in our database")
+            
         const emailInput = new TextInputBuilder()
             .setCustomId("email")
-            .setLabel("What's your email address?")
+            .setLabel("Would you link to change your email?")
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder("myname@pennwest.edu")
-            .setRequired(true)
+            .setPlaceholder(user.email)
+            .setRequired(false)
 
         const firstNameInput = new TextInputBuilder()
             .setCustomId("first_name")
-            .setLabel("What's your first name?")
+            .setLabel("Did you change your first name?")
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder("Luke")
-            .setRequired(true)
+            .setPlaceholder(user.first_name)
+            .setRequired(false)
 
         const lastNameInput = new TextInputBuilder()
             .setCustomId("last_name")
-            .setLabel("What's your last name?")
+            .setLabel("Did you change your last name?")
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder("Skywalker")
-            .setRequired(true)
+            .setPlaceholder(user.last_name ? user.last_name : "Skywalker")
+            .setRequired(false)
 
         const infoInput = new TextInputBuilder()
             .setCustomId("info")
-            .setLabel("Anything you'd like to add for your bio?")
+            .setLabel("Would you like to change your bio?")
             .setStyle(TextInputStyle.Paragraph)
-            .setPlaceholder("I'm a CompSci major!")
+            .setPlaceholder(user.info ? user.info : "I'm a CompSci major!")
             .setRequired(false)
 
         const firstActionRow = new ActionRowBuilder<TextInputBuilder>()
@@ -56,7 +74,7 @@ export default class SlashRegister extends SlashCommand {
 
         const thirdActionRow = new ActionRowBuilder<TextInputBuilder>()
             .addComponents(lastNameInput)
-            
+
         const fourthActionRow = new ActionRowBuilder<TextInputBuilder>()
             .addComponents(infoInput)
 

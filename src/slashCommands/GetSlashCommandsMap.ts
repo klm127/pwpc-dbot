@@ -5,6 +5,7 @@ import PingCommand from "./SlashPing";
 import TestMembersCommand from "./SlashTestMembers"
 import SlashMessageAll from "./SlashMessageAll";
 import SlashRegister from "./SlashRegister";
+import SlashUpdate from "./SlashUpdate";
 
 export default function GetSlashCommandsMap(datasource: DataSource, client: Client) : Map<string, SlashCommand> {
 
@@ -17,6 +18,8 @@ export default function GetSlashCommandsMap(datasource: DataSource, client: Clie
     map.set(SlashMessageAll.commandName, new SlashMessageAll(datasource, client))
 
     map.set(SlashRegister.commandName, new SlashRegister(datasource, client))
+
+    map.set(SlashUpdate.commandName, new SlashUpdate(datasource, client))
 
     return map
 }

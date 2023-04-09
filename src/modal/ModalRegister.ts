@@ -3,6 +3,8 @@ import { ModalSubmit } from "./Modal";
 import { DataSource } from "typeorm";
 import { Member } from "../entity/Member";
 
+import { delayDelete } from "../utility/InteractionHelpers";
+
 
 export class ModalRegister extends ModalSubmit {
 
@@ -12,7 +14,6 @@ export class ModalRegister extends ModalSubmit {
         super(datasource, client)
     }
     async execute(i: ModalSubmitInteraction<CacheType>) {
-        let my = this;
         await i.reply({
             ephemeral: true,
             content: "Processing your registration request."
@@ -21,6 +22,7 @@ export class ModalRegister extends ModalSubmit {
         const email = i.fields.getTextInputValue("email")
         const first = i.fields.getTextInputValue("first_name")
         const last = i.fields.getTextInputValue("last_name")
+        const info = i.fields.getTextInputValue("info")
 
         const discord_id = i.user.id
 
@@ -35,7 +37,7 @@ export class ModalRegister extends ModalSubmit {
             await i.editReply({
                 content: "You have already registered an account with this discord ID."
             }).then(()=>{
-                my.delayDelete(i)
+                delayDelete(i, 60000)
             })
             return
         }
@@ -48,7 +50,7 @@ export class ModalRegister extends ModalSubmit {
             await i.editReply({
                 content: "That email is already registered to an account."
             }).then(()=>{
-                my.delayDelete(i)
+                delayDelete(i, 60000)
             })
             return
         }
@@ -58,24 +60,20 @@ export class ModalRegister extends ModalSubmit {
         member.first_name = first
         member.last_name = last
         member.last_discord_name = discord_name
+        member.info = info
 
         await this.datasource.manager.save(Member, member).then(async m=>{
             await i.editReply({
                 content: "Saved your information to the database."
             }).then(()=>{
-                my.delayDelete(i)
+                delayDelete(i, 60000)
             })
         }).catch(async e=> {
             await i.editReply({
                 content: "Failed to save! "
             }).then(()=>{
-                my.delayDelete(i)
+                delayDelete(i, 60000)
             })
         })
-    }
-    delayDelete(i:ModalSubmitInteraction<CacheType>) {
-        setTimeout( ()=> {
-            i.deleteReply()
-        }, 60000)
     }
 }
