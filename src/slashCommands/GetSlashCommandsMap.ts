@@ -6,6 +6,7 @@ import TestMembersCommand from "./SlashTestMembers"
 import SlashMessageAll from "./SlashMessageAll";
 import SlashRegister from "./SlashRegister";
 import SlashUpdate from "./SlashUpdate";
+import SlashCreateRoles from "./SlashCreateRoles";
 
 export default function GetSlashCommandsMap(datasource: DataSource, client: Client) : Map<string, SlashCommand> {
 
@@ -20,6 +21,8 @@ export default function GetSlashCommandsMap(datasource: DataSource, client: Clie
     map.set(SlashRegister.commandName, new SlashRegister(datasource, client))
 
     map.set(SlashUpdate.commandName, new SlashUpdate(datasource, client))
+
+    map.set(SlashCreateRoles.commandName, new SlashCreateRoles(datasource, client))
 
     return map
 }

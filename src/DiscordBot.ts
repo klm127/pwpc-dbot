@@ -37,8 +37,12 @@ export default class DiscordBot {
         this.commands = GetSlashCommandsMap(this.database, this.client)
         this.modals = GetModalMap(this.database, this.client)
         this.discord_connect = params.discord
-        this.setDiscordListeners()
+        this.setDiscordListeners();
         //console.log("commands loaded:", Array.from(this.commands.keys()).join(","))
+        let g = this.client.guilds.resolveId(this.discord_connect.guild_id)
+        let f = this.client.guilds.resolve(this.discord_connect.guild_id)
+        this.setGuildRoles();
+
     }
 
     setDiscordListeners() {
@@ -70,9 +74,23 @@ export default class DiscordBot {
 
     }
 
+    setGuildRoles() {
+        let my = this
+        this.client.on(DiscordEvents.GuildMemberAdd, async m => {
+            const dm = await m.createDM(true)
+            await dm.send({
+                content: "Welcome to the bot testing server. Try me out in the server with slash commands. " + m.user.username
+            })
+            setTimeout( async ()=> {
+                await dm.delete()
+            }, 60000)
+        })
+    }
+
     start() {
         let my = this;
         this.database.initialize().then(async()=> {
+            await my.database.runMigrations()
             console.log(" >> Database initialized. Starting bot.")
             my.client.login(my.discord_connect.token)
         })
