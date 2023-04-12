@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn  } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, BaseEntity  } from "typeorm"
+import { RoleAssignment } from "./RoleAssignments"
 
 @Entity()
 export class Member {
@@ -35,14 +36,15 @@ export class Member {
     })
     graduation_date: Date
 
+    // Auto insert date with current time. 
     @CreateDateColumn({type:"timestamptz"})
     created_at: Date
 
-    static Sample() {
-        let mem = new Member()
-        mem.email = "em@em.com"
-        mem.first_name = "sample"
-        return mem
-    }
+    // // Sets the relation. Does not actually create a column.
+    @OneToMany(
+        ()=>RoleAssignment,
+        (ra)=>ra.member
+    ) 
+    roles_held: RoleAssignment[]
 
 }

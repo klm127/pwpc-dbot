@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "remove_node": "rmdir /S node_modules && del package-lock.json",
-    "scaf_update": "npm run remove_node && scaf_add . discord-bot",
+    "scaf_update": "npm run remove_node && scaf add . discord-bot",
     "dev": "nodemon src/index.ts",
     "refresh_slash": "ts-node src/refresh_slash_commands.ts",
     "typeorm": "typeorm-ts-node-commonjs"

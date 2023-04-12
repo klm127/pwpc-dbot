@@ -2,8 +2,8 @@ import "reflect-metadata"
 import { DataSource, DataSourceOptions } from "typeorm"
 import { Member } from "./entity/Member"
 import { MemberRole } from "./entity/MemberRoles"
-import { RoleAssignment } from "./entity/RoleAssignments"
 import { DefaultRoles1681072109943 } from "../migrations/1681072109943-DefaultRoles"
+import { RoleAssignment } from "./entity/RoleAssignments"
 
 
 type Writeable<T> = { -readonly [P in keyof T]: T[P] };

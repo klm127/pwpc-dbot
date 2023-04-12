@@ -1,4 +1,21 @@
-import { Entity, Column  } from "typeorm"
+import { Entity, Column, OneToMany, BaseEntity  } from "typeorm"
+import { Member } from "./Member"
+import { RoleAssignment } from "./RoleAssignments"
+import { Role } from "discord.js"
+
+/**
+ * AcessLevel controls how much power a particular user is granted over a bot.
+ */
+export enum AccessLevel {
+    /** Full access and control. For developer only. */
+    ADMIN = "admin",
+    /** Almost full access and control. For, e.g., officers  */
+    MOD = "mod",
+    /** For members, most controls granted */
+    MEMBER = "member",
+    /** Guest members only */
+    GUEST = "guest"
+}
 
 @Entity()
 export class MemberRole {
@@ -13,11 +30,13 @@ export class MemberRole {
     })
     role_description: string
 
-    static Sample() {
-        let role = new MemberRole()
-        role.role_name = "test"
-        role.role_description = "testing role"
-        return role
-    }
+    @Column( { type: "enum", default: AccessLevel.GUEST, enum:AccessLevel} )
+    access_level: AccessLevel
+
+    @OneToMany(
+        ()=>RoleAssignment,
+        (ra: RoleAssignment)=>ra.member_role
+    ) 
+    extant_role_assignments: RoleAssignment[]
 
 }
