@@ -4,15 +4,22 @@ import { AccessLevel, MemberRole } from "../src/entity/MemberRoles"
 export class DefaultRoles1681072109943 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
+        console.log("Running DefaultRoles migration up!")
+
+        const dbDev = new MemberRole()
+        dbDev.role_name = "Bot Dev"
+        dbDev.role_description = "- Is responsible for maintaining and working on the bot. Has max access levels but may not hold official club positions."
+        dbDev.access_level = AccessLevel.ADMIN
+
         const president = new MemberRole()
         president.role_name = "President"
         president.role_description = "- Has overall responsibility of the club. \n - Organizes member meetings and activities that occur throughout the year. \n - Calls and presides at all regular and special meetings."
-        president.access_level = AccessLevel.MOD
+        president.access_level = AccessLevel.ADMIN
 
         const vice_president = new MemberRole()
         vice_president.role_name = "Vice President"
         vice_president.role_description = "- Performs the duties of the president in his/her absence, inability to serve, or at his/her call.\n- Assists president in coordinating member meetings and activities.\n- Shares joint responsibility with the secretary for social media & communication."
-        vice_president.access_level = AccessLevel.MOD
+        vice_president.access_level = AccessLevel.ADMIN
 
         const secretary = new MemberRole()
         secretary.role_name = "Secretary"
@@ -49,10 +56,12 @@ export class DefaultRoles1681072109943 implements MigrationInterface {
         alumni.role_description = "- One who was previously a member of the club, but graduated or otherwise left."
         alumni.access_level = AccessLevel.GUEST
 
-        await queryRunner.manager.save(MemberRole, [president, vice_president, secretary, treasurer, member, officer, prospective_member, guest, alumni])
+        await queryRunner.manager.save(MemberRole, [dbDev, president, vice_president, secretary, treasurer, member, officer, prospective_member, guest, alumni])
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
+        const dbDev = new MemberRole()
+        dbDev.role_name = "Bot Dev"
         const president = new MemberRole()
         president.role_name = "President"
         const vice_president = new MemberRole()
@@ -69,7 +78,7 @@ export class DefaultRoles1681072109943 implements MigrationInterface {
         guest.role_name = "Guest"
         const alumni = new MemberRole()
         alumni.role_name = "Alumni"
-        queryRunner.manager.delete(MemberRole, [president, vice_president, secretary, treasurer, member, officer, guest, alumni])
+        queryRunner.manager.delete(MemberRole, [dbDev, president, vice_president, secretary, treasurer, member, officer, guest, alumni])
     }
 
 }

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, BaseEntity  } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, BaseEntity, JoinColumn  } from "typeorm"
 import { RoleAssignment } from "./RoleAssignments"
 
 @Entity()
@@ -43,8 +43,8 @@ export class Member {
     // // Sets the relation. Does not actually create a column.
     @OneToMany(
         ()=>RoleAssignment,
-        (ra)=>ra.member
-    ) 
+        (ra)=>ra.member_relation
+    )
     roles_held: RoleAssignment[]
 
 }

@@ -5,7 +5,7 @@ import { DataSource } from "typeorm";
 import { SlashCommand } from "./SlashCommand";
 import { delayDelete } from "../utility/InteractionHelpers";
 import { Member } from "../entity/Member";
-import { MemberRole } from "../entity/MemberRoles";
+import { AccessLevel, MemberRole } from "../entity/MemberRoles";
 import { RoleAssignment } from "../entity/RoleAssignments";
 
 
@@ -35,9 +35,14 @@ export default class SlashAssignRole extends SlashCommand {
             return 
         }
 
+        await interaction.reply({
+            ephemeral: true,
+            content: "Retrieving roles from the DB"
+        })
+
         // Get member level
 
-        let member = await this.datasource.manager.find(Member, {
+        let member_matches = await this.datasource.manager.find(Member, {
             where: {
                 discord_id: interaction.user.id
             },
@@ -46,23 +51,50 @@ export default class SlashAssignRole extends SlashCommand {
             }
         })
 
+
         // Member must exist, and dB must not be bugged (multiple members with same discord ID). Either of these conditions results in an error reply and early-function return. 
         
-        if(member.length < 1) {
+        if(member_matches.length < 1) {
             await interaction.editReply({
                 content: "I don't have you registered. Try running the register command first."
             }).then( ()=> { delayDelete(interaction, 60000)})
             return 
-        } else if(member.length > 1) {
+        } else if(member_matches.length > 1) {
             await interaction.editReply({
                 content: "Somehow too many members are registered to this discord ID. See the database administrator."
             }).then( ()=> { delayDelete(interaction, 60000)})
             return 
         }
 
+        let member = member_matches[0]
+        
+        let has_authority = false;
+        console.log("checking ", member.roles_held.length, "roles...")
+        for(let r of member.roles_held) {
+            let role_data = await this.datasource.manager.findOne(MemberRole, {
+                where: {
+                    role_name: r.member_role
+                }
+            })
+            if(role_data?.access_level == AccessLevel.ADMIN || role_data?.access_level == AccessLevel.MOD) {
+                has_authority = true;
+                break
+            }
+        }
+
+        if(!has_authority) {
+            await interaction.editReply({
+                content: "You don't have the authority to edit roles."
+            }).then(()=>delayDelete(interaction, 60000))
+            return
+        }
+
+        // first check for last discord name 
+
         await interaction.editReply({
-            content: "The roles you hold are: " + member[0].roles_held.join(",")
-        }).then( ()=> { delayDelete(interaction, 60000)})
+            content: "You have authority to assign roles, but it hasn't yet been implemented."
+        }).then( ()=>delayDelete(interaction, 60000))
+
         
     }
 }

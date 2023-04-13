@@ -42,4 +42,11 @@ ds.initialize().then( async ()=> {
 
     let u = await ds.manager.find(RoleAssignment)
     console.log(u)
+
+    let m = await ds.manager.find(Member, {
+        relations: {
+            roles_held: true
+        }
+    })
+    console.log(m)
 })

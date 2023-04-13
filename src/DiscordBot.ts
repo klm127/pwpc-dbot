@@ -90,7 +90,11 @@ export default class DiscordBot {
     start() {
         let my = this;
         this.database.initialize().then(async()=> {
-            await my.database.runMigrations()
+            await my.database.runMigrations().then( (x)=> {
+                for(let m of x) {
+                    console.log(m.name)
+                }
+            })
             console.log(" >> Database initialized. Starting bot.")
             my.client.login(my.discord_connect.token)
         })

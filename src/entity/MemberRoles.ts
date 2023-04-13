@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany, BaseEntity  } from "typeorm"
+import { Entity, Column, OneToMany, BaseEntity, JoinColumn  } from "typeorm"
 import { Member } from "./Member"
 import { RoleAssignment } from "./RoleAssignments"
 import { Role } from "discord.js"
@@ -35,8 +35,11 @@ export class MemberRole {
 
     @OneToMany(
         ()=>RoleAssignment,
-        (ra: RoleAssignment)=>ra.member_role
-    ) 
+        (ra)=>ra.role_relation
+    )
+    @JoinColumn({
+        name: "member"
+    })
     extant_role_assignments: RoleAssignment[]
 
 }
