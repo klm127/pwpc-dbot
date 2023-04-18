@@ -1,7 +1,7 @@
 import { CacheType, Client, Message, ModalSubmitInteraction } from "discord.js";
 import { ModalSubmit } from "./Modal";
 import { DataSource } from "typeorm";
-import { Member } from "../entity/Member";
+import { Member } from "../entities/Member";
 
 import { delayDelete } from "../utility/InteractionHelpers";
 

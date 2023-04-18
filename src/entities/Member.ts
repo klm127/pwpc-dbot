@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, BaseEntity, JoinColumn  } from "typeorm"
 import { RoleAssignment } from "./RoleAssignments"
+import { MemberRole } from "./MemberRoles"
 
 @Entity()
 export class Member {
@@ -46,5 +47,6 @@ export class Member {
         (ra)=>ra.member_relation
     )
     roles_held: RoleAssignment[]
+
 
 }

@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
-import { AccessLevel, MemberRole } from "../src/entity/MemberRoles"
+import { AccessLevel, MemberRole } from "../src/entities/MemberRoles"
 
 export class DefaultRoles1681072109943 implements MigrationInterface {
 

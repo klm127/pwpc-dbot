@@ -4,9 +4,9 @@ import { Client } from "discord.js";
 import { DataSource } from "typeorm";
 import { SlashCommand } from "./SlashCommand";
 import { delayDelete } from "../utility/InteractionHelpers";
-import { Member } from "../entity/Member";
-import { AccessLevel, MemberRole } from "../entity/MemberRoles";
-import { RoleAssignment } from "../entity/RoleAssignments";
+import { Member } from "../entities/Member";
+import { AccessLevel, MemberRole } from "../entities/MemberRoles";
+import { RoleAssignment } from "../entities/RoleAssignments";
 
 
 export default class SlashAssignRole extends SlashCommand {
@@ -69,7 +69,7 @@ export default class SlashAssignRole extends SlashCommand {
         let member = member_matches[0]
         
         let has_authority = false;
-        console.log("checking ", member.roles_held.length, "roles...")
+        console.log("checking ", member.roles_held.length, "role assignments....")
         for(let r of member.roles_held) {
             let role_data = await this.datasource.manager.findOne(MemberRole, {
                 where: {

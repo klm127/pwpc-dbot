@@ -3,7 +3,7 @@ import { SlashCommandBuilder, Interaction, CacheType, Client, ChatInputCommandIn
 import { SlashCommand } from "./SlashCommand";
 import { DataSource } from "typeorm";
 
-import { Member } from "../entity/Member";
+import { Member } from "../entities/Member";
 
 export default class TestMembersCommand extends SlashCommand {
 

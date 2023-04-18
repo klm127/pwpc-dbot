@@ -2,7 +2,7 @@ import { SlashCommandBuilder, Interaction, CacheType, PermissionFlagsBits, TextI
 import { Client } from "discord.js";
 import { DataSource } from "typeorm";
 import { SlashCommand } from "./SlashCommand";
-import { Member } from "../entity/Member";
+import { Member } from "../entities/Member";
 
 
 export default class SlashUpdate extends SlashCommand {

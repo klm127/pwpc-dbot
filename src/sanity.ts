@@ -6,8 +6,8 @@
 
 import { User } from "discord.js";
 import GetAppDataSource from "./datasource";
-import { Member } from "./entity/Member";
-import { RoleAssignment } from "./entity/RoleAssignments";
+import { Member } from "./entities/Member";
+import { RoleAssignment } from "./entities/RoleAssignments";
 
 import dotenv from "dotenv"
 import "reflect-metadata";

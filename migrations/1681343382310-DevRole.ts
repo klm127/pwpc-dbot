@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
-import { Member } from "../src/entity/Member"
-import { RoleAssignment } from "../src/entity/RoleAssignments"
+import { Member } from "../src/entities/Member"
+import { RoleAssignment } from "../src/entities/RoleAssignments"
 
 
 
@@ -29,6 +29,7 @@ export class DevRole1681343382310 implements MigrationInterface {
         let ra = new RoleAssignment()
         ra.member = karl.id
         ra.member_role = "Bot Dev"
+    
 
         await queryRunner.manager.save(karl)
         await queryRunner.manager.save(ra)
