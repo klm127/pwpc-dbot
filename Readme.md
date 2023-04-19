@@ -12,7 +12,6 @@
 - `docker` to spin up a postgres database
 - `postgres` as a data store
 
-
 # .Env
 
 See developers.discord.com for the token

@@ -26,6 +26,7 @@
     "typescript": "^5.0.3"
   },
   "devDependencies": {
-    "@types/pg": "^8.6.6"
+    "@types/pg": "^8.6.6",
+    "prettier": "^2.8.7"
   }
 }

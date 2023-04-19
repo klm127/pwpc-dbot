@@ -6,12 +6,11 @@
 // import { MemberRole } from './entity/MemberRoles';
 // import { RoleAssignment } from './entity/RoleAssignments';
 
-
 // export default function StartBot(inDiscord=false) {
 
 //     const GUILD_ID = process.env.GUILD_ID as string
 //     var guild : DiscordJS.Guild | undefined;
-    
+
 //     const client = new DiscordJS.Client({
 //         intents: [
 //             Intents.Guilds,
@@ -21,19 +20,18 @@
 //             Intents.GuildMembers
 //         ],
 //     })
-    
+
 //     const DataSource = GetAppDataSource(inDiscord);
-    
-    
+
 //     client.on(DiscordEvents.MessageCreate, m => {
-        
+
 //         if(m.content == "ping") {
 //             m.reply({
 //                 content: "pong to you, " + m.author
 //             })
 //         }
 //     })
-    
+
 //     client.on(DiscordEvents.InteractionCreate, async i=>{
 //         if(!i.isChatInputCommand()) return
 //         const command = Commands.get(i.commandName)
@@ -44,17 +42,16 @@
 //                 content: "I don't know that command."
 //             })
 //         }
-    
+
 //     })
 
-    
 //     /** RUN THE BOT */
 //     DataSource.initialize().then(async()=>{
 //         DataSource.query("SELECT NOW();").then( e=>{
 //             console.log(e)
 //         })
 
-//         let role : MemberRole 
+//         let role : MemberRole
 //         let exists = await DataSource.manager.find(MemberRole, {
 //             where: {role_name: MemberRole.Sample().role_name}
 //         })
@@ -97,12 +94,7 @@
 //         console.log("got mem, role, ras")
 //         console.log("mem created at ", mem.created_at)
 
-
-
-
 //         /*client.login(process.env.TOKEN)*/
 //     })
-    
+
 // }
-
-
