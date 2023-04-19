@@ -3,7 +3,7 @@ import {
 	ChatInputCommandInteraction,
 	SlashCommandBuilder,
 } from "discord.js";
-import TSlashCommand from "./slash";
+import TSlashCommand from "./Slash";
 import ping from "./ping";
 import register from "./register";
 import update from "./update";

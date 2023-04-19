@@ -3,7 +3,7 @@ import {
 	CacheType,
 	ChatInputCommandInteraction,
 } from "discord.js";
-import TSlashCommand from "./slash";
+import TSlashCommand from "./Slash";
 
 const ping: TSlashCommand = {
 	data: new SlashCommandBuilder()

@@ -7,7 +7,7 @@ import {
 	ModalBuilder,
 	ChatInputCommandInteraction,
 } from "discord.js";
-import TSlashCommand from "./slash";
+import TSlashCommand from "./Slash";
 
 const register: TSlashCommand = {
 	data: new SlashCommandBuilder()

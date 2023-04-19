@@ -9,7 +9,7 @@ import {
 } from "discord.js";
 import { Member } from "../entities/Member";
 import GetDatasource from "../datasource";
-import TSlashCommand from "./slash";
+import TSlashCommand from "./Slash";
 /**
  * /update
  *

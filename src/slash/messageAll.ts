@@ -6,7 +6,7 @@ import {
 	ChatInputCommandInteraction,
 } from "discord.js";
 import { delayDelete } from "../utility/InteractionHelpers";
-import TSlashCommand from "./slash";
+import TSlashCommand from "./Slash";
 
 /**
  * Direct messages all users in the server.
