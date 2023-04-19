@@ -3,6 +3,7 @@ import { InitializeDatasource } from "./datasource";
 import { InitializeClient } from "./client";
 import { Events } from "discord.js";
 import dispatchInteraction from "./pick";
+import { InitializeCache } from "./cache";
 
 // Load env variables
 dotenv.config();
@@ -63,6 +64,7 @@ if (!ENV_SET) {
 	// Run the client
 	datasource.initialize().then(async () => {
 		await datasource.runMigrations();
+		await InitializeCache();
 		console.log(" ⚙ Database initialized, Starting bot. ⚙ ");
 		client.login(process.env.TOKEN);
 	});

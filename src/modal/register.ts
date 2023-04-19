@@ -1,6 +1,6 @@
 import { ModalSubmitInteraction, CacheType } from "discord.js";
 import GetDatasource from "../datasource";
-import { delayDelete60 } from "../utility/InteractionHelpers";
+import { delayDelete60 } from "../utility/interaction";
 import { Member } from "../entities/Member";
 import { TModalCommand } from "./Modal";
 

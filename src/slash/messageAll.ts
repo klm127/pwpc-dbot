@@ -5,8 +5,12 @@ import {
 	PermissionFlagsBits,
 	ChatInputCommandInteraction,
 } from "discord.js";
-import { delayDelete } from "../utility/InteractionHelpers";
+import { delayDelete } from "../utility/interaction";
 import TSlashCommand from "./Slash";
+import Middleize, {Require} from "../middle";
+import { AccessLevel } from "../entities/MemberRoles";
+
+
 
 /**
  * Direct messages all users in the server.
@@ -69,4 +73,7 @@ const messageAll: TSlashCommand = {
 		delayDelete(interaction, 60000);
 	},
 };
+
+
+messageAll.execute = Middleize<ChatInputCommandInteraction<CacheType>>(messageAll.execute).addValidator(Require.Level([AccessLevel.ADMIN, AccessLevel.MOD]))
 export default messageAll;

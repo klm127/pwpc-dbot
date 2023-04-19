@@ -2,7 +2,7 @@ import { CacheType, ModalSubmitInteraction } from "discord.js";
 import { TModalCommand } from "./Modal";
 import GetDatasource from "../datasource";
 import { Member } from "../entities/Member";
-import { delayDelete60 } from "../utility/InteractionHelpers";
+import { delayDelete60 } from "../utility/interaction";
 
 /** Validates the update modal submission and updates the database accordingly. */
 const update: TModalCommand = {

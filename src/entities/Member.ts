@@ -32,7 +32,7 @@ export class Member {
 	@Column({ nullable: true })
 	info: string;
 
-	@Column({ nullable: true })
+	@Column({ nullable: true, unique: true })
 	discord_id: string;
 
 	@Column({ nullable: true })
