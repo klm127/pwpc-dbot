@@ -24,19 +24,20 @@ var datasource: DataSource | undefined = undefined;
 
 /** Called at the beginning of the program to initialize the datasource.  */
 export function InitializeDatasource(options_param: DataSourceOptions) {
-  let options = options_param as Writeable<DataSourceOptions>;
+	let options = options_param as Writeable<DataSourceOptions>;
 
-  options.entities = [Member, MemberRole, RoleAssignment];
-  options.migrations = [DefaultRoles1681072109943, DevRole1681343382310];
-  options.subscribers = [];
-  datasource = new DataSource(options);
+	options.entities = [Member, MemberRole, RoleAssignment];
+	options.migrations = [DefaultRoles1681072109943, DevRole1681343382310];
+	options.subscribers = [];
+	datasource = new DataSource(options);
+	return datasource;
 }
 
 export function IsDatasourceInitialized() {
-  return datasource != undefined;
+	return datasource != undefined;
 }
 
 /** Gets the global datasource singleton. */
 export default function GetDatasource(): DataSource {
-  return datasource!;
+	return datasource!;
 }

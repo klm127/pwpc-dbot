@@ -1,12 +1,12 @@
 import {
-  Entity,
-  Column,
-  CreateDateColumn,
-  OneToOne,
-  ManyToOne,
-  JoinTable,
-  JoinColumn,
-  BaseEntity,
+	Entity,
+	Column,
+	CreateDateColumn,
+	OneToOne,
+	ManyToOne,
+	JoinTable,
+	JoinColumn,
+	BaseEntity,
 } from "typeorm";
 import { MemberRole } from "./MemberRoles";
 import { Member } from "./Member";
@@ -17,25 +17,25 @@ import { Member } from "./Member";
  */
 @Entity()
 export class RoleAssignment {
-  @Column({
-    primary: true,
-  })
-  member: number;
+	@Column({
+		primary: true,
+	})
+	member: number;
 
-  @Column({
-    primary: true,
-  })
-  member_role: string;
+	@Column({
+		primary: true,
+	})
+	member_role: string;
 
-  @CreateDateColumn({ type: "timestamptz" })
-  assigned_at: Date;
+	@CreateDateColumn({ type: "timestamptz" })
+	assigned_at: Date;
 
-  /** Relations don't actually exist as columns in the table.  */
-  @ManyToOne(() => Member, (member) => member.id)
-  @JoinColumn({ name: "member" })
-  member_relation: Member;
+	/** Relations don't actually exist as columns in the table.  */
+	@ManyToOne(() => Member, (member) => member.id)
+	@JoinColumn({ name: "member" })
+	member_relation: Member;
 
-  @ManyToOne(() => MemberRole, (role) => role.role_name)
-  @JoinColumn({ name: "member_role" })
-  role_relation: MemberRole;
+	@ManyToOne(() => MemberRole, (role) => role.role_name)
+	@JoinColumn({ name: "member_role" })
+	role_relation: MemberRole;
 }

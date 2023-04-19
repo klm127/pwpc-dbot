@@ -1,32 +1,33 @@
 {
-  "name": "dbot",
-  "version": "0.0.1",
-  "type": "commonjs",
-  "description": "",
-  "main": "src/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "remove_node": "rmdir /S node_modules && del package-lock.json",
-    "scaf_update": "npm run remove_node && scaf add . discord-bot",
-    "dev": "nodemon src/index.ts",
-    "refresh_slash": "ts-node src/refresh_slash_commands.ts",
-    "typeorm": "typeorm-ts-node-commonjs"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "discord.js": "^14.9.0",
-    "dotenv": "^16.0.3",
-    "nodemon": "^2.0.22",
-    "pg": "^8.10.0",
-    "reflect-metadata": "^0.1.13",
-    "ts-node": "^10.9.1",
-    "typeorm": "^0.3.13",
-    "typescript": "^5.0.3"
-  },
-  "devDependencies": {
-    "@types/pg": "^8.6.6",
-    "prettier": "^2.8.7"
-  }
+	"name": "dbot",
+	"version": "0.0.1",
+	"type": "commonjs",
+	"description": "",
+	"main": "src/index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"remove_node": "rmdir /S node_modules && del package-lock.json",
+		"scaf_update": "npm run remove_node && scaf add . discord-bot",
+		"dev": "nodemon src/index.ts",
+		"refresh_slash": "ts-node scripts/refresh_slash_commands.ts",
+		"typeorm": "typeorm-ts-node-commonjs",
+		"pretty": "npx prettier --write ."
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"discord.js": "^14.9.0",
+		"dotenv": "^16.0.3",
+		"nodemon": "^2.0.22",
+		"pg": "^8.10.0",
+		"reflect-metadata": "^0.1.13",
+		"ts-node": "^10.9.1",
+		"typeorm": "^0.3.13",
+		"typescript": "^5.0.3"
+	},
+	"devDependencies": {
+		"@types/pg": "^8.6.6",
+		"prettier": "^2.8.7"
+	}
 }
