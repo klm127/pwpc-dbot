@@ -10,7 +10,7 @@ datasource db {
 model Member {
   id              Int              @id() @default(autoincrement())
   email           String           @unique
-  discordId       String
+  discordId       String           @unique
   firstName       String
   lastName        String?
   birthday        DateTime?
@@ -22,9 +22,13 @@ model Member {
 }
 
 enum MemberRoleAccessLevel {
+	// Full access and control. For developer & president only.
   admin
+  // Almost full access and control. For, e.g., officers.
   mod
+  // For members, extra features.
   member
+  // Guests only.
   guest
 }
 
@@ -35,6 +39,7 @@ model MemberRole {
   assignments     RoleAssignment[]
 }
 
+// Uses two FKs as a unique composit pk. 
 model RoleAssignment {
   memberID       Int
   member         Member     @relation(fields: [memberID], references: [id])

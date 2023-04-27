@@ -1,14 +1,13 @@
 import { CacheType, ModalSubmitInteraction } from "discord.js";
 import { TModalCommand } from "./Modal";
-import GetDatasource from "../datasource";
-import { Member } from "../entities/Member";
+import datasource from "../datasource";
 import { delayDelete60 } from "../utility/interaction";
+import Middleize from "../middle";
 
 /** Validates the update modal submission and updates the database accordingly. */
 const update: TModalCommand = {
 	modalId: "update",
 	async execute(i: ModalSubmitInteraction<CacheType>) {
-		const datasource = GetDatasource();
 		await i.reply({
 			ephemeral: true,
 			content: "Processing your update request.",
@@ -23,72 +22,69 @@ const update: TModalCommand = {
 
 		const discord_name = i.user.username;
 
-		const matching_id = await datasource.manager.find(Member, {
+		const matching_id = await datasource.member.findFirst({
 			where: {
-				discord_id: discord_id,
+				discordId: discord_id,
 			},
 		});
-		if (matching_id.length < 1) {
-			await i
-				.editReply({
-					content:
-						"You aren't yet registered with us. Try running /register to register.",
-				})
-				.then(() => {
-					delayDelete60(i);
-				});
+		if (matching_id === null) {
+			await i.editReply({
+				content:
+					"You aren't yet registered with us. Try running /register to register.",
+			});
 			return;
 		}
 		if (email.length > 0) {
-			const matching_email = await datasource.manager.find(Member, {
+			const matching_email = await datasource.member.findFirst({
 				where: {
 					email: email,
 				},
 			});
-			if (matching_email.length > 0) {
-				let test = matching_email[0];
-				if (test.discord_id != discord_id) {
-					await i
-						.editReply({
-							content: "A user is already using that email.",
-						})
-						.then(() => {
-							delayDelete60(i);
-						});
+			if (matching_email != null) {
+				let test = matching_email;
+				if (test.discordId != discord_id) {
+					await i.editReply({
+						content: "A user is already using that email.",
+					});
 					return;
 				}
 			}
 		}
-		const member = matching_id[0];
-		member.last_discord_name = discord_name;
+		const member = matching_id;
+		member.lastDiscordName = discord_name;
 		if (email.length > 0) {
 			member.email = email;
 		}
 		if (first.length > 0) {
-			member.first_name = first;
+			member.firstName = first;
 		}
 		if (last.length > 0) {
-			member.last_name = last;
+			member.lastName = last;
 		}
 		if (info.length > 0) {
 			member.info = info;
 		}
-		await datasource.manager.save(Member, member).then(() => {
-			i.editReply({
-				content: "Your info has been updated.",
+
+		await datasource.member
+			.update({
+				where: {
+					id: member.id,
+				},
+				data: member,
 			})
-				.then(() => {
-					delayDelete60(i);
-				})
-				.catch(() => {
-					i.editReply({
-						content: "There was an issue with the database.",
-					}).then(() => {
-						delayDelete60(i);
-					});
+			.then(async () => {
+				await i.editReply({
+					content: "Your info has been updated.",
 				});
-		});
+			})
+			.catch(async () => {
+				await i.editReply({
+					content: "There was an issue with the database.",
+				});
+			});
 	},
 };
+
+update.execute = Middleize(update.execute).addPostProcessor(delayDelete60)
 
 export default update;

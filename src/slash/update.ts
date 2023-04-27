@@ -7,8 +7,7 @@ import {
 	ModalBuilder,
 	ChatInputCommandInteraction,
 } from "discord.js";
-import { Member } from "../entities/Member";
-import GetDatasource from "../datasource";
+import datasource from "../datasource";
 import TSlashCommand from "./Slash";
 /**
  * /update
@@ -22,18 +21,15 @@ import TSlashCommand from "./Slash";
  * @author klm127
  */
 const update: TSlashCommand = {
-	data: new SlashCommandBuilder()
-		.setName("update")
-		.setDescription("Update your user information."),
+	data: new SlashCommandBuilder().setName("update").setDescription("Update your user information."),
 	async execute(interaction: ChatInputCommandInteraction<CacheType>) {
-		let datasource = GetDatasource();
 		const userid = interaction.user.id;
-		const matching = await datasource.manager.find(Member, {
+		const matching = await datasource.member.findFirst({
 			where: {
-				discord_id: userid,
+				discordId: userid,
 			},
 		});
-		if (matching.length < 1) {
+		if (matching == null) {
 			interaction.reply({
 				fetchReply: true,
 				ephemeral: true,
@@ -42,11 +38,9 @@ const update: TSlashCommand = {
 			return;
 		}
 
-		const user = matching[0];
+		const user = matching;
 
-		const modal = new ModalBuilder()
-			.setCustomId("update")
-			.setTitle("Update your info in our database");
+		const modal = new ModalBuilder().setCustomId("update").setTitle("Update your info in our database");
 
 		const emailInput = new TextInputBuilder()
 			.setCustomId("email")
@@ -59,14 +53,14 @@ const update: TSlashCommand = {
 			.setCustomId("first_name")
 			.setLabel("Did you change your first name?")
 			.setStyle(TextInputStyle.Short)
-			.setPlaceholder(user.first_name)
+			.setPlaceholder(user.firstName)
 			.setRequired(false);
 
 		const lastNameInput = new TextInputBuilder()
 			.setCustomId("last_name")
 			.setLabel("Did you change your last name?")
 			.setStyle(TextInputStyle.Short)
-			.setPlaceholder(user.last_name ? user.last_name : "Skywalker")
+			.setPlaceholder(user.lastName ? user.lastName : "Skywalker")
 			.setRequired(false);
 
 		const infoInput = new TextInputBuilder()
@@ -76,28 +70,15 @@ const update: TSlashCommand = {
 			.setPlaceholder(user.info ? user.info : "I'm a CompSci major!")
 			.setRequired(false);
 
-		const firstActionRow =
-			new ActionRowBuilder<TextInputBuilder>().addComponents(emailInput);
+		const firstActionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(emailInput);
 
-		const secondActionRow =
-			new ActionRowBuilder<TextInputBuilder>().addComponents(
-				firstNameInput
-			);
+		const secondActionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(firstNameInput);
 
-		const thirdActionRow =
-			new ActionRowBuilder<TextInputBuilder>().addComponents(
-				lastNameInput
-			);
+		const thirdActionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(lastNameInput);
 
-		const fourthActionRow =
-			new ActionRowBuilder<TextInputBuilder>().addComponents(infoInput);
+		const fourthActionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(infoInput);
 
-		modal.addComponents(
-			firstActionRow,
-			secondActionRow,
-			thirdActionRow,
-			fourthActionRow
-		);
+		modal.addComponents(firstActionRow, secondActionRow, thirdActionRow, fourthActionRow);
 
 		await interaction.showModal(modal);
 	},

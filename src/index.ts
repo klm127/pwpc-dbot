@@ -1,9 +1,10 @@
 import dotenv from "dotenv";
-import { InitializeDatasource } from "./datasource";
 import { InitializeClient } from "./client";
 import { Events } from "discord.js";
 import dispatchInteraction from "./pick";
 import { InitializeCache } from "./cache";
+
+import datasource from "./datasource"
 
 // Load env variables
 dotenv.config();
@@ -40,20 +41,6 @@ if (!ENV_SET) {
 		missing
 	);
 } else {
-	// Initialize the data connection
-	const datasource = InitializeDatasource({
-		type: "postgres",
-		host:
-			process.env.IN_DOCKER == "true"
-				? process.env.PG_CONTAINER!
-				: "localhost",
-		port: parseInt(process.env.PG_PORT_EXPOSE!),
-		username: process.env.PG_USER!,
-		password: process.env.PG_PASS!,
-		database: process.env.PG_DB!,
-		synchronize: process.env.TORM_SYNC == "true" ? true : false,
-		logging: false,
-	});
 
 	// Initialize the discord client
 	const client = InitializeClient({});
@@ -61,11 +48,8 @@ if (!ENV_SET) {
 	// Add the interaction listener
 	client.on(Events.InteractionCreate, dispatchInteraction);
 
-	// Run the client
-	datasource.initialize().then(async () => {
-		await datasource.runMigrations();
-		await InitializeCache();
-		console.log(" ⚙ Database initialized, Starting bot. ⚙ ");
-		client.login(process.env.TOKEN);
-	});
+	InitializeCache().then( (v)=> {
+		console.log("🤖 Connecting with the discord bot.")
+		client.login(process.env.TOKEN)
+	})
 }

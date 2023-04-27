@@ -1,4 +1,4 @@
-import { prisma } from "./datasource/p";
+import prisma from "./datasource";
 
 /***
  * For quick tests

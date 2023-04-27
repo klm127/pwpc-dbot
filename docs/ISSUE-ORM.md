@@ -1,5 +1,7 @@
 ORM evaluation impressions:
 
+It's Prisma. Definitely prisma.
+
 ## Prisma
 
 [link](https://github.com/prisma)

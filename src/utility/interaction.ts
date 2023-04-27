@@ -7,7 +7,7 @@ import {
 } from "discord.js";
 
 /** Will delete a reply on an interaction that allows one. */
-export function delayDelete(
+export async function delayDelete(
 	i: Interaction,
 	delay: number
 ) {
@@ -20,7 +20,7 @@ export function delayDelete(
 }
 
 /** Calls deleteReply after 60 seconds. */
-export function delayDelete60( i: Interaction ) {
+export async function delayDelete60( i: Interaction ) {
 	if(i.isRepliable() && i.replied) {
 		setTimeout(() => {
 			i.deleteReply();
@@ -29,7 +29,7 @@ export function delayDelete60( i: Interaction ) {
 }
 
 
-export function createOrEditEphReply(i: Interaction, msg:string) {
+export async function createOrEditEphReply(i: Interaction, msg:string) {
 	if(i.isRepliable()) {
 		let p = i;
 		if(!i.replied) {

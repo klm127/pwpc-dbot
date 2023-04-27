@@ -1,16 +1,8 @@
-import {
-	SlashCommandBuilder,
-	Interaction,
-	CacheType,
-	PermissionFlagsBits,
-	ChatInputCommandInteraction,
-} from "discord.js";
-import { delayDelete } from "../utility/interaction";
+import { SlashCommandBuilder, Interaction, CacheType, PermissionFlagsBits, ChatInputCommandInteraction } from "discord.js";
+import { delayDelete, delayDelete60 } from "../utility/interaction";
 import TSlashCommand from "./Slash";
-import Middleize, {Require} from "../middle";
-import { AccessLevel } from "../entities/MemberRoles";
-
-
+import Middleize, { Require } from "../middle";
+import { MemberRoleAccessLevel } from "@prisma/client";
 
 /**
  * Direct messages all users in the server.
@@ -20,12 +12,7 @@ const messageAll: TSlashCommand = {
 		.setName("messageall")
 		.setDescription("Messages everyone in server.")
 		.addStringOption((option) =>
-			option
-				.setName("message")
-				.setDescription(
-					"The message to send to everyone in the server."
-				)
-				.setRequired(true)
+			option.setName("message").setDescription("The message to send to everyone in the server.").setRequired(true)
 		)
 		.setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
 
@@ -74,6 +61,7 @@ const messageAll: TSlashCommand = {
 	},
 };
 
-
-messageAll.execute = Middleize<ChatInputCommandInteraction<CacheType>>(messageAll.execute).addValidator(Require.Level([AccessLevel.ADMIN, AccessLevel.MOD]))
+messageAll.execute = Middleize<ChatInputCommandInteraction<CacheType>>(messageAll.execute)
+	.addValidator(Require.Level([MemberRoleAccessLevel.admin, MemberRoleAccessLevel.mod]))
+	.addPostProcessor(delayDelete60);
 export default messageAll;

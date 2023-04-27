@@ -12,13 +12,9 @@ import TSlashCommand from "./Slash";
 const register: TSlashCommand = {
 	data: new SlashCommandBuilder()
 		.setName("register")
-		.setDescription(
-			"Register as a prospective member of the programming club."
-		),
+		.setDescription("Register as a prospective member of the programming club."),
 	async execute(interaction: ChatInputCommandInteraction<CacheType>) {
-		const modal = new ModalBuilder()
-			.setCustomId("register")
-			.setTitle("Register with the Programming Club");
+		const modal = new ModalBuilder().setCustomId("register").setTitle("Register with the Programming Club");
 
 		const emailInput = new TextInputBuilder()
 			.setCustomId("email")
@@ -48,28 +44,15 @@ const register: TSlashCommand = {
 			.setPlaceholder("I'm a CompSci major!")
 			.setRequired(false);
 
-		const firstActionRow =
-			new ActionRowBuilder<TextInputBuilder>().addComponents(emailInput);
+		const firstActionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(emailInput);
 
-		const secondActionRow =
-			new ActionRowBuilder<TextInputBuilder>().addComponents(
-				firstNameInput
-			);
+		const secondActionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(firstNameInput);
 
-		const thirdActionRow =
-			new ActionRowBuilder<TextInputBuilder>().addComponents(
-				lastNameInput
-			);
+		const thirdActionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(lastNameInput);
 
-		const fourthActionRow =
-			new ActionRowBuilder<TextInputBuilder>().addComponents(infoInput);
+		const fourthActionRow = new ActionRowBuilder<TextInputBuilder>().addComponents(infoInput);
 
-		modal.addComponents(
-			firstActionRow,
-			secondActionRow,
-			thirdActionRow,
-			fourthActionRow
-		);
+		modal.addComponents(firstActionRow, secondActionRow, thirdActionRow, fourthActionRow);
 
 		await interaction.showModal(modal);
 	},
