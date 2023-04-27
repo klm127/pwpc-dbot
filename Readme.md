@@ -47,3 +47,12 @@ IN_DOCKER=false
 
 TORM_SYNC=true
 ```
+
+## Running
+
+1. Add the .env file to the root directory of the file and populate it with the appropriate values. The most important is Token, which you need to get yourself from developer.discord.com
+2. Install Docker
+3. Install Make (for creating the docker dbs)
+4. Run `make pg` to create and run the container
+5. Run `npm run dev` to run the dev script with ts-node to start the bot
+

@@ -11,12 +11,14 @@
 		"dev": "nodemon src/index.ts",
 		"refresh_slash": "ts-node scripts/refresh_slash_commands.ts",
 		"typeorm": "typeorm-ts-node-commonjs",
-		"pretty": "npx prettier --write ."
+		"pretty": "npx prettier --write .",
+		"sanity": "ts-node src/sanity.ts"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@prisma/client": "^4.13.0",
 		"discord.js": "^14.9.0",
 		"dotenv": "^16.0.3",
 		"nodemon": "^2.0.22",
@@ -28,6 +30,7 @@
 	},
 	"devDependencies": {
 		"@types/pg": "^8.6.6",
-		"prettier": "^2.8.7"
+		"prettier": "^2.8.7",
+		"prisma": "^4.13.0"
 	}
 }

@@ -14,7 +14,7 @@ Schema looks a LOT like dbdiagram's language
 
 Example schema
 
-```
+```prisma
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")

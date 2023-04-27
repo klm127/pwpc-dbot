@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Member {
+  id              Int              @id() @default(autoincrement())
+  email           String           @unique
+  discordId       String
+  firstName       String
+  lastName        String?
+  birthday        DateTime?
+  info            String?
+  lastDiscordName String?
+  graduationDate  DateTime?
+  createdAt       DateTime         @default(now())
+  roleAssignments RoleAssignment[]
+}
+
+enum MemberRoleAccessLevel {
+  admin
+  mod
+  member
+  guest
+}
+
+model MemberRole {
+  roleName        String                @id()
+  roleDescription String                @default("")
+  accessLevel     MemberRoleAccessLevel @default(guest)
+  assignments     RoleAssignment[]
+}
+
+model RoleAssignment {
+  memberID       Int
+  member         Member     @relation(fields: [memberID], references: [id])
+  memberRoleName String
+  memberRole     MemberRole @relation(fields: [memberRoleName], references: [roleName])
+  assignedAt     DateTime   @default(now())
+
+  // composite pk
+  @@id([memberID, memberRoleName])
+}
