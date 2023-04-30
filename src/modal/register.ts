@@ -2,10 +2,11 @@ import { ModalSubmitInteraction, CacheType } from "discord.js";
 import datasource from "../datasource";
 import { delayDelete60 } from "../utility/interaction";
 import { TModalCommand } from "./Modal";
+import interactionIDs from "../const/interactionIDs";
 
 /** Validates the register modal submission and updates the database accordingly. */
 const register: TModalCommand = {
-	modalId: "register",
+	modalId: interactionIDs.modal.register,
 	async execute(i: ModalSubmitInteraction<CacheType>) {
 		await i.reply({
 			ephemeral: true,

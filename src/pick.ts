@@ -5,6 +5,7 @@
 import slashMap from "./slash";
 import modalMap from "./modal";
 import Discord, { Client, Events } from "discord.js";
+import interactionIDs from "./const/interactionIDs";
 
 export default async function dispatchInteraction(i: Discord.Interaction) {
 	if (i.isChatInputCommand()) {
@@ -18,14 +19,16 @@ export default async function dispatchInteraction(i: Discord.Interaction) {
 			});
 		}
 	} else if (i.isModalSubmit()) {
-		const command = modalMap.get(i.customId);
-		if (command) {
-			await command.execute(i);
-		} else {
-			await i.reply({
-				content: "I don't recognize that modal. How did you do that?",
-				ephemeral: true,
-			});
+		if(i.customId != interactionIDs.modal.nopick) {
+			const command = modalMap.get(i.customId);
+			if (command) {
+				await command.execute(i);
+			} else {
+				await i.reply({
+					content: "I don't recognize that modal. How did you do that?",
+					ephemeral: true,
+				});
+			}
 		}
 	}
 }

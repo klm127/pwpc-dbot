@@ -10,7 +10,6 @@
 		"scaf_update": "npm run remove_node && scaf add . discord-bot",
 		"dev": "nodemon src/index.ts",
 		"refresh_slash": "ts-node scripts/refresh_slash_commands.ts",
-		"typeorm": "typeorm-ts-node-commonjs",
 		"pretty": "npx prettier --write .",
 		"sanity": "ts-node src/sanity.ts"
 	},
@@ -25,7 +24,6 @@
 		"pg": "^8.10.0",
 		"reflect-metadata": "^0.1.13",
 		"ts-node": "^10.9.1",
-		"typeorm": "^0.3.13",
 		"typescript": "^5.0.3"
 	},
 	"devDependencies": {

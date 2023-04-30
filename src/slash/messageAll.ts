@@ -3,13 +3,14 @@ import { delayDelete, delayDelete60 } from "../utility/interaction";
 import TSlashCommand from "./Slash";
 import Middleize, { Require } from "../middle";
 import { MemberRoleAccessLevel } from "@prisma/client";
+import interactionIDs from "../const/interactionIDs";
 
 /**
  * Direct messages all users in the server.
  */
 const messageAll: TSlashCommand = {
 	data: new SlashCommandBuilder()
-		.setName("messageall")
+		.setName(interactionIDs.slash.messageAll)
 		.setDescription("Messages everyone in server.")
 		.addStringOption((option) =>
 			option.setName("message").setDescription("The message to send to everyone in the server.").setRequired(true)

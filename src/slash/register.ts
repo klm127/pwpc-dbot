@@ -8,13 +8,14 @@ import {
 	ChatInputCommandInteraction,
 } from "discord.js";
 import TSlashCommand from "./Slash";
+import interactionIDs from "../const/interactionIDs";
 
 const register: TSlashCommand = {
 	data: new SlashCommandBuilder()
-		.setName("register")
+		.setName(interactionIDs.slash.register)
 		.setDescription("Register as a prospective member of the programming club."),
 	async execute(interaction: ChatInputCommandInteraction<CacheType>) {
-		const modal = new ModalBuilder().setCustomId("register").setTitle("Register with the Programming Club");
+		const modal = new ModalBuilder().setCustomId(interactionIDs.modal.register).setTitle("Register with the Programming Club");
 
 		const emailInput = new TextInputBuilder()
 			.setCustomId("email")

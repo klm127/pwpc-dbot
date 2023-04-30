@@ -19,6 +19,9 @@ model Member {
   graduationDate  DateTime?
   createdAt       DateTime         @default(now())
   roleAssignments RoleAssignment[]
+  alreadyVotedOnBool BoolVote[] @relation("alreadyVoted")
+  votesCreated BoolVote[] @relation("createdBy")
+
 }
 
 enum MemberRoleAccessLevel {
@@ -37,6 +40,9 @@ model MemberRole {
   roleDescription String                @default("")
   accessLevel     MemberRoleAccessLevel @default(guest)
   assignments     RoleAssignment[]
+
+  allowedToVoteOnBool BoolVote[]
+
 }
 
 // Uses two FKs as a unique composit pk. 
@@ -49,4 +55,31 @@ model RoleAssignment {
 
   // composite pk
   @@id([memberID, memberRoleName])
+}
+
+enum VoteTypes {
+  poll
+  vote
+  amendment
+}
+
+// A vote of "Aye" or "Nay"
+model BoolVote{
+  id Int @id() @default(autoincrement())
+  createdOn DateTime @default(now())
+  discordMessageId String?
+  createdById Int
+  createdBy Member @relation("createdBy", fields:[createdById], references:[id])
+
+  voteType VoteTypes
+  startsAt DateTime
+  endsAt DateTime
+  prompt String
+  ayeInfo String?
+  nayInfo String?
+  ayes Int @default(0)
+  nays Int @default(0)
+  ongoing Boolean @default(false)
+  alreadyVoted Member[] @relation("alreadyVoted")
+  allowedRoles MemberRole[]
 }

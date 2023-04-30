@@ -3,10 +3,11 @@ import { TModalCommand } from "./Modal";
 import datasource from "../datasource";
 import { delayDelete60 } from "../utility/interaction";
 import Middleize from "../middle";
+import interactionIDs from "../const/interactionIDs";
 
 /** Validates the update modal submission and updates the database accordingly. */
 const update: TModalCommand = {
-	modalId: "update",
+	modalId: interactionIDs.modal.update,
 	async execute(i: ModalSubmitInteraction<CacheType>) {
 		await i.reply({
 			ephemeral: true,

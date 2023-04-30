@@ -1,4 +1,4 @@
-import prisma from "./datasource";
+import datasource from "./datasource";
 
 /***
  * For quick tests
@@ -8,6 +8,6 @@ import prisma from "./datasource";
  * will ts-node this file
  */
 
-prisma.memberRole.count().then( v=>{
+datasource.memberRole.count().then( v=>{
     console.log(v)
 })

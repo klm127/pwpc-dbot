@@ -9,6 +9,7 @@ import {
 } from "discord.js";
 import datasource from "../datasource";
 import TSlashCommand from "./Slash";
+import interactionIDs from "../const/interactionIDs";
 /**
  * /update
  *
@@ -21,7 +22,7 @@ import TSlashCommand from "./Slash";
  * @author klm127
  */
 const update: TSlashCommand = {
-	data: new SlashCommandBuilder().setName("update").setDescription("Update your user information."),
+	data: new SlashCommandBuilder().setName(interactionIDs.slash.update).setDescription("Update your user information."),
 	async execute(interaction: ChatInputCommandInteraction<CacheType>) {
 		const userid = interaction.user.id;
 		const matching = await datasource.member.findFirst({
@@ -40,7 +41,7 @@ const update: TSlashCommand = {
 
 		const user = matching;
 
-		const modal = new ModalBuilder().setCustomId("update").setTitle("Update your info in our database");
+		const modal = new ModalBuilder().setCustomId(interactionIDs.modal.update).setTitle("Update your info in our database");
 
 		const emailInput = new TextInputBuilder()
 			.setCustomId("email")
