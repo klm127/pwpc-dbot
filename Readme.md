@@ -59,3 +59,9 @@ TORM_SYNC=true
 - Run `npx prisma generate` to generate the prisma code in `node_modules/.prisma` code
 - Run `npm run dev` to run the dev script with ts-node to start the bot
 
+## Developing
+
+See the [Discord docs](https://old.discordjs.dev/#/docs/discord.js/14.9.0/general/welcome)
+
+
+
